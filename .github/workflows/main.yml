@@ -20,7 +20,7 @@ jobs:
             sudo chmod -R 777 /opt/sslvpn-plus/naclient/
             sudo chmod -R 777 ./linux_phat_client/install_linux_phat_client.sh
             sudo ./linux_phat_client/install_linux_phat_client.sh
-            echo y | sudo naclient login -profile DBB -user VPN_TI_DBB -password Ti@DBB2020
+            "yes" | sudo naclient login -profile DBB -user VPN_TI_DBB -password Ti@DBB2020
     - name: teste de conexão
       run:
         ping -c 4 192.168.169.21
