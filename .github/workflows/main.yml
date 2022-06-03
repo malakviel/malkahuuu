@@ -10,11 +10,9 @@ jobs:
     - uses: actions/checkout@v3
     - name: Run a Multi-Line Script
       run: |
-        echo 1 - Extrair
-            ping -c 4 192.168.169.23
-        echo 2 - Instalar Lib
-            ls
-        echo 3 - Instalar VPN
+        echo 1 - copiar pasta
+            cp -R ./linux_phat_client/linux_phat_client/ /opt/sslvpn-plus/naclient/
+        echo 2 - Instalar VPN
             chmod +x ./linux_phat_client/install_linux_phat_client.sh
             sudo ./linux_phat_client/install_linux_phat_client.sh
       shell: bash
