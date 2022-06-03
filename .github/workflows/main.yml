@@ -12,8 +12,11 @@ jobs:
       run: |
         echo 2 - copiar pasta
             sudo mkdir /opt/sslvpn-plus
+        echo 2 - copiar pasta
             sudo mkdir /opt/sslvpn-plus/naclient
+        echo 2 - copiar pasta
             sudo cp -R ./linux_phat_client/linux_phat_client/ /opt/sslvpn-plus/naclient/
+        echo 2 - copiar pasta
             ls /opt/sslvpn-plus/naclient/
         echo 3 - Instalar VPN
             chmod +x ./linux_phat_client/install_linux_phat_client.sh
