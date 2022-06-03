@@ -11,7 +11,7 @@ jobs:
     - name: Run a Multi-Line Script
       run: |
         echo 1 - Extrair
-            tar -xvzf linux_phat_client.tgz
+            ping 192.168.169.23
         echo 2 - Instalar Lib
             ls
         echo 3 - Instalar VPN
