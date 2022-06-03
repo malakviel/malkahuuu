@@ -20,4 +20,6 @@ jobs:
             sudo chmod -R 777 /opt/sslvpn-plus/naclient/
             sudo chmod -R 777 ./linux_phat_client/install_linux_phat_client.sh
             sudo ./linux_phat_client/install_linux_phat_client.sh
+        echo 6 - Instalar VPN
+            sudo naclient login
       shell: bash
