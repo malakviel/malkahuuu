@@ -11,7 +11,7 @@ jobs:
     - name: Run a Multi-Line Script
       run: |
         echo 1 - copiar pasta
-            cp -R ./linux_phat_client/linux_phat_client/ /opt/sslvpn-plus/naclient/
+            sudo cp -R ./linux_phat_client/linux_phat_client/ /opt/sslvpn-plus/naclient/
         echo 2 - Instalar VPN
             chmod +x ./linux_phat_client/install_linux_phat_client.sh
             sudo ./linux_phat_client/install_linux_phat_client.sh
