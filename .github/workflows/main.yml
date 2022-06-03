@@ -22,7 +22,8 @@ jobs:
             sudo ./linux_phat_client/install_linux_phat_client.sh
     - name: Conectar VPN
       run:
-        echo "y" | sudo naclient login -profile DBB -user VPN_TI_DBB -password Ti@DBB2020
+        sudo naclient login -profile DBB -user VPN_TI_DBB -password Ti@DBB2020
+        y
     - name: Teste de Conexão
       run:
         echo ping para 192.168.169.21   
