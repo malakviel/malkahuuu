@@ -17,7 +17,7 @@ jobs:
         echo 3 - copiar pasta
             sudo cp -rf linux_phat_client/linux_phat_client/* /opt/sslvpn-plus/naclient/
         echo 5 - Instalar VPN
-            chmod +x /opt/sslvpn-plus/naclient/
+            chmod +x ./opt/sslvpn-plus/naclient/
         echo 6 - Instalar VPN
             chmod +x ./linux_phat_client/install_linux_phat_client.sh
             sudo ./linux_phat_client/install_linux_phat_client.sh
