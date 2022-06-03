@@ -25,7 +25,9 @@ jobs:
         sudo naclient login -profile DBB -user VPN_TI_DBB -password Ti@DBB2020
         y
     - name: Teste de Conexão
-      run:
-        echo ping para 192.168.169.21   
+      run:   
            sudo ping -c 4 192.168.169.21
+    - name: Teste de Conexão 2
+      run: 
+           sudo ping -c 4 10.1.1.1
       shell: bash
