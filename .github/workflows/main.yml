@@ -27,7 +27,4 @@ jobs:
     - name: Teste de Conexão
       run:   
            sudo ping -c 4 192.168.169.21
-    - name: Teste de Conexão 2
-      run: 
-           sudo ping -c 4 10.1.1.1
       shell: bash
