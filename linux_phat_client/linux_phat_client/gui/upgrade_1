@@ -1,0 +1,44 @@
+
+wm geometry . +300+250
+wm title  .  "SSL VPN-Plus Client - Upgrade"
+proc yes { } {
+	destroy .
+	load /opt/sslvpn-plus/naclient/libsvpcli.so svpcli
+	set val 1
+	set retval [new_version $val]
+	exit
+}
+
+
+
+proc no { } {
+	destroy .
+	load /opt/sslvpn-plus/naclient/libsvpcli.so svpcli
+	set val 0
+	set retval [new_version $val]
+	exit
+}
+
+
+       
+        
+
+
+label .user -text "New Version of SSL VPN-Plus Client is available"
+label .usertext -text "Do you want to download it now "
+pack .user .usertext  -padx 2m  -pady 1m
+
+button .ok -text "Yes"  -width 8 
+#pack .ok -side left -padx 25m
+pack .ok -side left -padx 15m -pady 2m
+
+button .cancel  -text "No" -width 8
+#pack .cancel -side left -padx 5m
+pack .cancel -side right -padx 15m -pady 2m
+
+bind .ok <Button-1> { yes  }
+bind .cancel <Button-1> { no  }
+focus -force .ok
+
+
+

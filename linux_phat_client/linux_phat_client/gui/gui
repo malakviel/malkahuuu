@@ -1,0 +1,218 @@
+wm geometry . +300+250 
+wm title  .  "SSL VPN-Plus Client - Login"
+set pts 0 
+global pts
+set size 0 
+set a	 0 
+global size
+
+if {[catch {package require Img}]} {
+   image create photo image1 -file /opt/sslvpn-plus/naclient/gui/naclient.gif -width 400 -height 75
+} else {
+   image create photo image1 -file /opt/sslvpn-plus/naclient/gui/phat_banner.bmp -width 400 -height 75
+}
+
+proc hseparator path {
+    frame $path -relief flat -borderwidth 3 -height 0 -pady 0
+    pack [frame $path.inner -relief groove -borderwidth 2 -height 2 -pady 0] -expand yes -fill x
+    set path
+}
+
+canvas .c -width 387 -height 75 
+.c create image 50 0 -image image1 -anchor nw
+
+label .gateway  -text "Network Config:"  
+frame .fr -width 15 -height 13.6 -bd 2 ;#main frame
+button .delete -text "Delete Network" -command "delete"  -width 11
+button .add -text "Add Network" -command "add_network"  -width 11
+frame .fr.menubar -relief sunken -bd 2
+#fill the  top menu
+menubutton .fr.menubar.file -text "Click here to select network profile"  -menu .fr.menubar.file.menu
+menu .fr.menubar.file.menu 
+
+
+button .login -text "Connect" -command "login" -width 10
+button .cancel -text "Cancel" -command out -width 10
+button .proxyset -text "Proxy Settings" -command "proxyset"  -width 11
+
+grid .c -row 0 -column 0  -sticky ew -columnspan 4 -pady 10
+grid [hseparator .sep1] -pady 10 -sticky ew -row 1 -columnspan 4
+grid .gateway -row 2 -column 0 -padx 20 -columnspan 2
+grid .fr  -row 2 -column 2 -padx 20 -columnspan 2
+grid .fr.menubar -row 2 -column 2 -columnspan 2
+grid .fr.menubar.file -row 2 -column 2 -columnspan 2
+grid .add -row 3 -column 1 -pady 10 -padx 30
+grid .delete -row 3 -column 2 -columnspan 2 
+grid [hseparator .sep2] -pady 10 -sticky ew -row 4 -columnspan 4
+grid .login -row 5 -column 1 -pady 10 -padx 10 
+grid .proxyset -row 5 -column 2 -pady 10 
+grid .cancel -row 5 -column 3 -pady 10 -padx 10 
+
+set f [ open /opt/sslvpn-plus/naclient/naclient.conf ] 
+while { [ gets $f line ] >= 0 } {
+		global size
+		global pts
+		if { [ llength $line] >= 2 } {
+			set  a  [ expr $a+1  ]	
+			set value [ lindex $line  0 ] 
+			set size [ expr	$size+1 ]
+			if { $size==0 } {
+			} else {
+				.fr.menubar.file.menu add radiobutton -label $value -variable pts -command {.fr.menubar.file configure -text $pts -width 30 -height 1 -bd 2} 
+			}
+		}
+}
+close $f
+
+
+if { $pts!= 0 } {
+
+	 .fr.menubar.file configure -text $pts
+
+}
+
+if { $a == 1  } {
+	.fr.menubar.file configure -text $value -width 30 -height 1 -bd 2 
+	set pts $value
+}
+
+
+label .blank -width 1
+focus .login
+
+proc login { } {
+	global pts
+	if { $pts == 0 } {
+		exec wish /opt/sslvpn-plus/naclient/gui/error_mesg "Please select any network profile"
+	} else {
+		load /opt/sslvpn-plus/naclient/libsvpcli.so svpcli
+		set retval [servervalidation $pts 1]
+		if { $retval == 1 } {
+			destroy .
+			exec wish auth $pts
+		}
+		destroy .
+		exec wish gui
+	}
+}
+
+
+
+proc gui { } {
+        destroy .c .fr .gateway .blank .login .add .delete .cancel .sep1 .sep2 .proxyset
+        destroy .serverl .hostl .portl .servername .ipAddr .port .ok .cancel 
+	global size
+	global pts
+	set pts 0 
+	set size 0 
+	wm title  .  "SSL VPN-Plus Client - Login"
+
+	if {[catch {package require Img}]} {
+	    image create photo image1 -file /opt/sslvpn-plus/naclient/gui/naclient.gif -width 400 -height 75
+	} else { 
+	    image create photo image1 -file /opt/sslvpn-plus/naclient/gui/phat_banner.bmp -width 400 -height 75
+	}
+        canvas .c -width 387 -height 75
+        .c create image 50 0 -image image1 -anchor nw
+        
+        label .gateway  -text "Network:"
+        frame .fr -width 15 -height 13.6 -bd 2 ;#main frame
+        button .delete -text "Delete Network" -command "delete"  -width 11
+        button .add -text "Add Network" -command "add_network"  -width 11
+        frame .fr.menubar -relief sunken -bd 2
+        #fill the  top menu
+        menubutton .fr.menubar.file -text "Click here to select network profile"  -menu .fr.menubar.file.menu
+        menu .fr.menubar.file.menu
+        
+        
+        button .login -text "Connect" -command "login" -width 10
+        button .cancel -text "Cancel" -command out -width 10
+        button .proxyset -text "Proxy Settings" -command "proxyset"  -width 11
+        
+        grid .c -row 0 -column 0  -sticky ew -columnspan 4 -pady 10
+        grid [hseparator .sep1] -pady 10 -sticky ew -row 1 -columnspan 4
+        grid .gateway -row 2 -column 0 -padx 20 -columnspan 2
+        grid .fr  -row 2 -column 2 -padx 20 -columnspan 2
+        grid .fr.menubar -row 2 -column 2 -columnspan 2
+        grid .fr.menubar.file -row 2 -column 2 -columnspan 2
+        grid .add -row 3 -column 0 -columnspan 2 -pady 10 -padx 30
+        grid .delete -row 3 -column 2 -columnspan 2
+        grid [hseparator .sep2] -pady 10 -sticky ew -row 4 -columnspan 4
+        grid .login -row 5 -column 1 -pady 10 -padx 10
+        grid .proxyset -row 5 -column 2 -pady 10
+        grid .cancel -row 5 -column 3 -pady 10 -padx 10
+        
+	set f [ open /opt/sslvpn-plus/naclient/naclient.conf ] 
+	set a 0
+	while { [ gets $f line ] >= 0 } {
+			global size
+			global pts
+			if { [ llength $line] >= 2 } {
+				set  a  [ expr $a+1  ]	
+				set value [ lindex $line  0 ] 
+				set size [ expr	$size+1 ]
+				if { $size==0 } {
+				} else {
+					.fr.menubar.file.menu add radiobutton -label $value -variable pts -command {.fr.menubar.file configure -text $pts -width 30 -height 1 -bd 2} 
+				}
+			}
+	}
+	close $f
+	if { $pts!= 0 } {
+		menubutton .fr.menubar.file configure -text $pts
+	}
+
+	if { $a == 1  } {
+		.fr.menubar.file configure -text $value -width 30 -height 1 -bd 2 
+		set pts $value
+	}
+
+}
+
+proc add_network { } {
+     global size
+     exec wish /opt/sslvpn-plus/naclient/gui/addnetwork $size
+     gui
+}
+
+proc delete { } {
+		global size
+		global pts
+		 if { $pts == 0 } {
+
+	              exec wish mesg  "Please select a network profile for deletion."
+
+		} else {
+	
+			if { $size==1 } {
+			exec wish error_mesg Delete failed: Only one network profile exists.  
+			} else {	
+				exec sh user.sh delete_profile $pts 
+                                gui
+			}
+
+		}
+}
+
+proc proxyset { } { 
+    set f [ open /opt/sslvpn-plus/naclient/proxysetui.conf ]
+       if { [ gets $f line ] >= 0 } {
+            set proxyargs [split $line /]
+            set proxy_flag [lindex $proxyargs 0] 
+            set proxy_type [lindex $proxyargs 1] 
+            set proxy_server [lindex $proxyargs 2]
+            set proxy_port [lindex $proxyargs 3]
+            set proxy_auth_username [lindex $proxyargs 4]
+
+            exec wish /opt/sslvpn-plus/naclient/gui/proxy_setting $proxy_flag $proxy_type $proxy_server $proxy_port $proxy_auth_username 
+       } else {
+            exec wish /opt/sslvpn-plus/naclient/gui/proxy_setting 
+       }
+}
+
+proc out { } {
+	exit
+}
+
+
+

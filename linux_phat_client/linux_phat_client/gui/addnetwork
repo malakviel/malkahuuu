@@ -1,0 +1,77 @@
+ wm geometry . +300+250
+ wm title  .  "SSL VPN-Plus Client - Add Network"
+ global size
+ global servername
+ global ipaddr
+ global port
+ set servername ""
+ set ipaddr ""
+ set port ""
+ label .serverl  -justify left -text "Server Name"
+ label .hostl -text  "HostName/IP Address"
+ label .portl -text  "Port"
+ entry .servername -background white -foreground black -width 15 -textvariable servername  -justify right
+ entry .ipAddr -background white -foreground black -width 15 -textvariable ipaddr -justify center
+ entry .port -background white -foreground black -width 15 -textvariable port -justify left
+ button .ok  -text "Ok"
+ button .cancel  -text "cancel" -command out
+ focus -force .ok
+ grid .serverl -row 0 -column 0
+ grid .hostl -row 0 -column 1
+ grid .portl -row 0 -column 2
+ grid .servername -row 1 -column 0
+ grid .ipAddr -row 1 -column 1
+ grid .port -row 1 -column 2
+ grid .ok -row 3 -column 0
+ grid .cancel  -row 3 -column 2
+ bind .ok <Button-1> { writeNetworktofile $servername $ipaddr $port }
+ bind .ok <Return> { writeNetworktofile $servername $ipaddr $port }
+
+ set size [ lindex $argv  0 ]
+
+proc writeNetworktofile { servername ipaddr port } {
+
+  global size
+
+  set lservername [string trim $servername]
+  set lipaddr [string trim $ipaddr]
+  set lport [string trim $port]
+
+  if { $size == 20 } {
+       exec wish mesg "Error: Maximum Network Limit of 20 is reached"
+       return
+  }
+  if { [string length $lservername ] == 0 } {
+       exec wish mesg "Error: ServerName is empty"
+       return
+  }
+  if { [string length $ipaddr] == 0 } {
+       exec wish mesg "Error: Hostname/IP Address is empty"
+       return
+  }
+  if { [string length $port] == 0} {
+       exec wish mesg "Error: Port is empty"
+       return
+  }
+
+  if { [ regexp {\s} $lservername ] } {
+     exec wish mesg "Error: Space is not accepted in Server Name"
+     return
+  }
+  if { [ regexp {\s} $lipaddr ] } {
+     exec wish mesg "Error: Space is not accepted in IP Address / Hostname"
+     return
+  }
+  if { [ regexp {\s} $lport ] } {
+     exec wish mesg "Error: Space is not accepted in Port"
+     return
+  }
+  if { [catch {exec sh ./user.sh add_profile $lservername $lipaddr $lport} retval] } {
+  } else {
+     destroy .
+  }
+}
+
+proc out {} {
+   destroy .
+}

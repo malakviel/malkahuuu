@@ -1,0 +1,9 @@
+wm geometry . +380+280
+wm title  .  "SSL VPN-Plus Client"
+#label .mesg -text "$argv" -padx 2m -pady 2m 
+#pack .mesg
+message .msg -width 380 -text "$argv" -justify left 
+pack .msg -pady 5
+button .ok  -text "Ok" -command exit 
+focus -force .ok
+pack .ok -padx 2m -pady 2m  

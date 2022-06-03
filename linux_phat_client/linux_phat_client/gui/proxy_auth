@@ -1,0 +1,55 @@
+wm geometry . +300+250
+wm title  .  "Proxy Server Authentication Required"
+
+set gateway [ lindex $argv  0 ]
+global gateway 
+
+proc authentication { username password } {
+	global gateway 
+	if { $username == "" } {
+		exec wish mesg Error: Proxy server user name is blank
+		return 1 ;
+ 	}
+
+	if { $password == "" } {
+		exec wish  mesg Error: Proxy server password is blank
+		return 1 ;
+	}
+	set n1 [ string length $username ]
+	if { $n1 > 64 } {
+		exec wish  mesg Error: Proxy server user name contains more than 64 characters
+		return 1 ;
+	}	
+	set n2 [ string length $password ]
+	if { $n2 > 64 } {
+		exec wish  mesg Error: Proxy server password contains more than 64 characters
+		return 1 ;
+	}	
+
+	exec  /opt/sslvpn-plus/naclient/gui/user.sh proxy_auth $gateway $username $password 
+	exit 
+}
+
+proc out { } {
+	exit
+}
+
+
+label .user -text "Enter Proxy Server User Name"
+entry .usertext -width 32  -relief sunken -textvariable  username 
+pack .user .usertext  -padx 2m  -pady 1m  
+focus -force .usertext
+
+label .passwd -text "Enter Proxy Server Password"
+entry .passwdtext -width 32  -relief sunken -textvariable passwd -show *
+pack  .passwd .passwdtext -padx 2m -pady 1m
+
+button .ok -text "Ok"  -width 5  
+pack .ok -side left -padx 4m  -pady 2m 
+button .cancel  -text "Cancel" -command exit -width 5
+pack .cancel -side right -padx 4m  -pady 2m 
+bind .ok <Button-1> { authentication  $username $passwd  }
+bind .ok <Return> { authentication  $username $passwd  }
+
+bind .cancel <Button-1> { out  }
+bind .cancel <Return> { out }

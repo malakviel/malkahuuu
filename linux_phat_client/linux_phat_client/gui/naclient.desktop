@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Exec=/opt/sslvpn-plus/naclient/gui/naclient.sh
+Icon=/opt/sslvpn-plus/naclient/gui/naclient.ico
+Name=SSL VPN-Plus Client
+Name[en_US]=SSL VPN-Plus Client
+Terminal=false
+Type=Application
+Version=1.0
+X-KDE-SubstituteUID=false

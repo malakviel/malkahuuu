@@ -1,0 +1,17 @@
+wm geometry . +380+280
+wm title  .  "SSL VPN-Plus Client"
+
+frame .b
+
+frame .b.right
+image create photo image0 -file error-icon.gif
+label .b.right.msg -justify left -text "Connection to the gateway has been terminated due to server \ncertificate validation failure. Please contact your administrator."
+canvas .b.left -width 50 -height 75
+.b.left create image 7 20 -image image0 -anchor nw
+pack .b.right.msg
+pack .b.left .b.right -side left
+pack .b -pady 1m
+
+button .ok  -text "Ok" -command exit
+focus -force .ok
+pack .ok -padx 2m -pady 2m

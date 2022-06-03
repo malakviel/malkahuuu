@@ -1,0 +1,27 @@
+#!/usr/bin/tclsh
+load /opt/sslvpn-plus/naclient/libsvpcli.so svpcli
+set retval [get_disconnect_value] 
+if { $retval == 1} {
+	exec wish message Error: GATEWAY HAS DISCONNECTED YOUR CONNECTION 
+        } elseif { $retval == 2 } {
+                exec wish message Error: LICENSE HAS EXPIRED
+        } elseif { $retval == 3 } {
+                exec wish message Error: INVALID LICENSE
+	} elseif { $retval == 4 } {
+                exec wish message Error: INVALID LICENSE
+	} elseif { $retval == 5 } {
+                exec wish message Error: SESSION IDLE TIMEOUT OCCURED 
+	} elseif { $retval == 6 } {
+                exec wish message Error: FORCED TIMEOUT OCCURED
+	} elseif { $retval == 7} {
+                exec wish message Error: NO AUTH TIMEOUT
+	} else {
+	#	exec wish message hello 1	
+              exec wish /opt/sslvpn-plus/naclient/gui/gui  
+	#	exec wish message hello 2
+        }
+
+
+         
+          
+

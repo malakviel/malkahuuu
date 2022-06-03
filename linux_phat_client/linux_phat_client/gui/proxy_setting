@@ -1,0 +1,161 @@
+wm geometry . +300+250 
+wm title  .  "SSL VPN-Plus Client - Proxy Server Setting"
+global proxy_flag 
+global proxy_type 
+global proxy_server
+global proxy_port 
+global proxy_auth_username
+global proxy_auth_password 
+
+set proxy_flag [ lindex $argv  0 ]
+set proxy_type [ lindex $argv  1 ]
+set proxy_server [ lindex $argv  2 ]
+set proxy_auth_username [ lindex $argv  4 ]
+
+frame .flag  
+frame .proxytype 
+frame .proxy  
+frame .proxy_auth
+frame .button
+pack .flag .proxytype .proxy .proxy_auth .button -side top  -pady 2
+
+#checkbox for enable/disable
+label .flag.blank_l -width 25
+checkbutton .flag.checkbutton -text "Use Proxy" -variable proxy_flag -width 10 -command flag_action
+pack .flag.blank_l .flag.checkbutton -side right
+focus -force .flag.checkbutton
+
+#radiobutton for proxy type
+label .proxytype.ptype  -text "Type of Proxy"  -width 15
+radiobutton .proxytype.rd_http -text HTTP -variable proxy_type -value 1 -command {set proxy_port ""}
+radiobutton .proxytype.rd_sock5 -text "SOCKS ver5" -variable proxy_type -value 2 -command {set proxy_port ""}
+
+#Proxy Address and Port
+label .proxy.server_l  -text "IP/Hostname"  -width 10
+entry .proxy.server_e  -textvariable  proxy_server -width 16
+label .proxy.port_l  -text "Port"     -width 10
+entry .proxy.port_e  -textvariable  proxy_port -width 15
+pack  .proxy.server_l .proxy.server_e .proxy.port_l .proxy.port_e -side left -padx 2  -pady 2
+
+# select the proxy type based on argument
+if { $proxy_type == 2} {
+pack  .proxytype.ptype .proxytype.rd_http  .proxytype.rd_sock5  -side left  -padx 2  -pady 2
+.proxytype.rd_sock5 select
+} else {
+pack  .proxytype.ptype .proxytype.rd_http  .proxytype.rd_sock5  -side left  -padx 2  -pady 2
+.proxytype.rd_http select
+}
+
+set proxy_port [ lindex $argv  3 ]
+
+#Proxy Username and Password
+label .proxy_auth.username_l  -text "User" -width 10 
+entry .proxy_auth.username_e  -textvariable  proxy_auth_username -width 16 -state disabled
+label .proxy_auth.password_l -text "Password" -width 10
+entry .proxy_auth.password_e  -textvariable  proxy_auth_password  -width 15 -show *
+pack .proxy_auth.username_l .proxy_auth.username_e .proxy_auth.password_l .proxy_auth.password_e -side left -padx 2 -pady 2
+
+#Ok/cancel buttons
+button .button.ok -text "Ok"   -width 8 -command "proxy_update"
+button .button.cancel -text "Cancel" -width 8 -command "out" 
+pack .button.ok .button.cancel -side left -padx 20 -pady 10 -anchor se
+focus -force .button.ok
+
+proc flag_action { } {
+	global proxy_flag 
+	if {$proxy_flag == 1} {
+		.flag.checkbutton select
+		.proxy.server_e configure -state normal
+		.proxy.port_e configure -state normal
+		.proxy_auth.password_e configure -state normal	
+		.proxy_auth.username_e configure -state normal
+		.proxytype.rd_http configure -state normal
+		.proxytype.rd_sock5 configure -state normal
+	} else {
+		.flag.checkbutton deselect
+		.proxy.server_e configure -state disabled
+		.proxy.port_e configure -state disabled
+		.proxy_auth.password_e configure -state disabled
+		.proxy_auth.username_e configure -state disabled
+		.proxytype.rd_http configure -state disabled
+		.proxytype.rd_sock5 configure -state disabled
+	}
+}
+
+flag_action 
+
+proc out { } {
+	exit
+}
+
+proc proxy_update { } {
+	global proxy_flag 
+	global proxy_type
+	global proxy_server
+	global proxy_port 
+	global proxy_auth_username
+	global proxy_auth_password 
+
+	if { $proxy_server == "" } {
+		exec wish mesg Error: Proxy Server IP address/Hostname cannot be empty
+		return 1 ;
+	}
+	
+	if { $proxy_port == "" } {
+		exec wish mesg Error: Proxy Server Port cannot be empty
+		return 1 ;
+	}
+
+	if { $proxy_auth_username != "" } {
+
+        	if { [ regexp {\s} $proxy_auth_username ] } {
+			exec wish mesg Error: Space not acceptable in Proxy UserName
+			return 1 ;
+        	}
+
+		if { $proxy_auth_password == "" && $proxy_flag == 1 } {
+			exec wish mesg Error: Password field cannot be empty
+			return 1 ;
+		}
+	}
+
+	if { $proxy_auth_password != "" } {
+        	if { [ regexp {\s} $proxy_auth_password] } {
+			exec wish mesg Error: Space not acceptable in Proxy Password
+			return 1 ;
+                }
+		if { $proxy_auth_username == "" } {
+			exec wish mesg Error: User name cannot be empty
+			return 1 ;
+		}		
+	}
+	set username_len [string length $proxy_auth_username ]
+	if { $username_len > 64 } {
+		exec wish  mesg Error: User name contains more than 64 characters
+		return 1 ;
+	}	
+	set passwd_len [string length $proxy_auth_password ]
+	if { $passwd_len > 64 } {
+		exec wish  mesg Error: Password contains more than 64 characters
+		return 1 ;
+	}
+       
+        if { [ regexp {\s} $proxy_server ] } {
+		exec wish mesg Error: Space not acceptable in Proxy Server IP address/Hostname
+		return 1 ;
+        }
+
+        if { [ regexp {\s} $proxy_port ] } {
+		exec wish mesg Error: Space not acceptable in Proxy Port
+		return 1 ;
+        }
+
+
+	if { $username_len == 0 } {
+		exec  /opt/sslvpn-plus/naclient/proxy_set $proxy_flag $proxy_type $proxy_server $proxy_port  	
+	} else {
+		exec  /opt/sslvpn-plus/naclient/proxy_set $proxy_flag $proxy_type $proxy_server $proxy_port $proxy_auth_username $proxy_auth_password 	
+
+	}
+	exit
+}

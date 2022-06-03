@@ -1,0 +1,155 @@
+wm geometry . +390+250
+wm title  .  "Security Alert"
+
+set validation_result [ lindex $argv 0 ]
+set pts 0
+global pts
+set size 0
+set a	 0
+
+set DATE_R 1
+set CHAIN_R 2
+set NAME_R 4
+set UNKNOWN_R 8
+
+global size
+set status 1
+global status
+
+frame .b
+frame .d
+frame .e
+frame .f
+frame .g
+frame .h
+
+pack .b .g -side top -pady 2
+
+
+set date [expr $validation_result & $DATE_R]
+set chain [expr $validation_result & $CHAIN_R]
+set name [expr $validation_result & $NAME_R]
+set unknown [expr $validation_result & $UNKNOWN_R]
+
+if { $validation_result < $UNKNOWN_R } {
+
+	if { $chain == $CHAIN_R } {
+		frame .b.right
+		image create photo image0 -file warning-icon.gif
+		label .b.right.nssvalidation -justify left -text "The server connection you are trying to make has not been\nnotarized  by an authority trusted by this computer.\n Therefore server connection cannot be relied upon.\nContact your system administrator for information on how to proceed." -anchor nw
+		canvas .b.left -width 50 -height 75
+	#	pack .b.left
+		.b.left create image 0 10 -image image0 -anchor nw
+		pack .b.right.nssvalidation
+		pack .b.left .b.right -side left
+	} else {
+		frame .b.right
+		image create photo image0 -file warning-icon.gif
+		label .b.right.nssvalidation -justify left -text "There is a problem with the detailed attributes of the signed certificate.\nContact your system administrator on how to proceed." -anchor nw
+		canvas .b.left -width 50 -height 75
+		.b.left create image 0 10 -image image0 -anchor nw
+		pack .b.right.nssvalidation
+		pack .b.left .b.right -side left
+	}
+ 
+	if {  $date == $DATE_R } {
+		frame .d.right
+		image create photo image1 -file error.gif
+		label .d.right.datevalidation -justify left -text "The security certificate has expired or is not yet \t\nvalid."
+		canvas .d.left -width 30 -height 35
+		pack .d.left
+		.d.left create image 0 0 -image image1 -anchor nw
+		pack .d.right.datevalidation
+		pack .d.left .d.right -side left
+	}
+
+
+	if { $chain == $CHAIN_R } {
+		frame .e.right
+		image create photo image2 -file error.gif
+		label .e.right.namevalidation -justify left -text "The security certificate is not trusted because\t\nthe issuer certificate is unknown.\n"
+		canvas .e.left -width 30 -height 35
+		pack .e.left
+		.e.left create image 0 0 -image image2 -anchor nw
+		pack .e.right.namevalidation
+		pack .e.left .e.right -side left
+	}
+
+	if {  $name  == $NAME_R } {
+		frame .f.right
+		image create photo image3 -file error.gif
+		label .f.right.namevalidation -justify left -text "The name on the security certificate is invalid or \t\ndoes not match the name of the server.\n"
+		canvas .f.left -width 30 -height 35
+		pack .f.left
+		.f.left create image 0 0 -image image3 -anchor nw
+		pack .f.right.namevalidation
+		pack .f.left .f.right -side left
+	}
+
+} else {
+	frame .b.right
+	image create photo image0 -file warning-icon.gif
+        label .b.right.nssvalidation -justify left -text "The server connection you are trying to make has not been\n validated. Therefore server connection cannot be relied upon.\nContact your system administrator for information on how to proceed." -anchor nw
+	canvas .b.left -width 50 -height 75
+#	pack .b.left
+	.b.left create image 0 10 -image image0 -anchor nw
+	pack .b.right.nssvalidation
+	pack .b.left .b.right -side left
+
+	frame .d.right
+	image create photo image1 -file error.gif
+	if { $unknown == $UNKNOWN_R } {
+		label .d.right.datevalidation -justify left -text "Unable to validate certificate due to unknown error.\t\n"
+	} else {
+		label .d.right.datevalidation -justify left -text "Unable to validate certificate due to internal error.\t\n"
+	}
+
+	canvas .d.left -width 30 -height 35
+	pack .d.left
+	.d.left create image 0 0 -image image1 -anchor nw
+	pack .d.right.datevalidation
+	pack .d.left .d.right -side left
+
+
+}
+
+
+proc out { } {
+	exit 0
+}
+
+proc login { } {
+	exit 250
+}
+
+
+
+proc toggle { } {
+	global status
+	if { $status == 1 } {
+		pack forget .b .g
+		pack .b .d .e .f .h -side top -pady 2
+		set status 0
+	} else {
+		pack forget .b .d .e .f .h
+		pack .b .g -side top -pady 2
+		set status 1
+	}
+}
+
+
+label .g.blank -width 1
+button .g.ok -text "Proceed Unsafe" -command "login" -width 15
+button .g.cancel -text "Cancel" -command out -width 15
+button .g.toggle -text "More Info" -command "toggle" -width 9
+pack .g.cancel .g.toggle .g.ok -side left -padx 25 -pady 2
+
+label .h.blank -width 1
+button .h.ok -text "Proceed Unsafe" -command "login" -width 15
+button .h.cancel -text "Cancel" -command out -width 15
+button .h.toggle -text "Less Info" -command "toggle" -width 9
+pack .h.cancel .h.toggle .h.ok -side left -padx 25 -pady 2
+
+
+
+focus .g.cancel

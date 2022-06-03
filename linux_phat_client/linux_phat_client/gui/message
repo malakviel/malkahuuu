@@ -1,0 +1,14 @@
+wm geometry . +380+280
+wm title  .  "SSL VPN-Plus Client"
+proc tologin { } {
+	destroy .
+	exec wish /opt/sslvpn-plus/naclient/gui/gui
+}
+message .msg -width 380 -text "$argv" -justify left
+pack .msg -pady 5
+button .ok -text "To Login" -command "tologin" -width 5
+pack .ok -side left -padx 20m -pady 2m 
+button .cancel  -text "Cancel" -command exit -width 5
+pack .cancel -side right -padx 20m -pady 2m
+focus .ok
+

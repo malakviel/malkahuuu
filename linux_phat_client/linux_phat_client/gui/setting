@@ -1,0 +1,40 @@
+wm geometry . +300+250 
+wm title  .  "SSL VPN-Plus Client - Setting"
+
+set vpn_alias [ lindex $argv  0 ]
+set gw_name [ lindex $argv  1 ]
+set gw_port [ lindex $argv  2 ]
+set proxy_server [ lindex $argv  3 ]
+set proxy_port [ lindex $argv  4 ]
+set proxy_auth_username [ lindex $argv  5 ]
+set proxy_auth_password [ lindex $argv  6 ]
+frame .vpn  
+frame .gw  
+frame .proxy_detail  
+frame .proxy  
+frame .proxy_auth
+pack .vpn .gw .proxy_detail .proxy .proxy_auth -side top -padx 2m -pady 2m
+
+label .vpn.alias_l  -text "Remote Network Details"
+pack .vpn.alias_l  -side left  
+
+label .gw.name_l -text "Gateway"   
+entry .gw.name_e  -textvariable  $gw_name
+label .gw.port_l  -text "Port"    
+entry .gw.port_e  -textvariable  $gw_port 
+pack .gw.name_l .gw.name_e .gw.port_l .gw.port_e -side left  -padx 2m -pady 2m 
+
+label .proxy_detail.l  -text "Proxy Server Setting "  
+pack .proxy_detail.l -side left
+
+label .proxy.server_l  -text "Proxy Server"
+entry .proxy.server_e  -textvariable  $proxy_server
+label .proxy.port_l  -text "Port"
+entry .proxy.port_e  -textvariable  $proxy_port
+pack .proxy.server_l .proxy.server_e .proxy.port_l .proxy.port_e -side left -padx 2m -pady 2m
+
+label .proxy_auth.username_l  -text "User"
+entry .proxy_auth.username_e  -textvariable  $proxy_auth_username
+label .proxy_auth.password_l -text "Password"
+entry .proxy_auth.password_e  -textvariable  $proxy_auth_password
+pack .proxy_auth.username_l .proxy_auth.username_e .proxy_auth.password_l .proxy_auth.password_e -side left

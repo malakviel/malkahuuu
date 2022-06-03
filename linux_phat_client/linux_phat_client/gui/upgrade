@@ -1,0 +1,27 @@
+wm geometry . +300+250
+wm title  .  "SSL VPN-Plus Client - Upgrade"
+proc yes { } {
+	destroy .
+	exec sh /opt/sslvpn-plus/naclient/gui/user.sh upgrade yes
+	exit 
+}
+
+proc no { } {
+	destroy .
+	exec sh /opt/sslvpn-plus/naclient/gui/user.sh upgrade no
+	exit
+}
+
+label .user -text "New Version of SSL VPN-Plus Client is available"
+label .usertext -text "Do you want to download it now "
+pack .user .usertext  -padx 2m  -pady 1m  
+
+button .ok -text "Yes"  -width 8   
+pack .ok -side left -padx 25m   
+
+button .cancel  -text "No" -width 8 
+pack .cancel -side left -padx 5m   
+
+bind .ok <Button-1> { yes  }
+bind .cancel <Button-1> { no  }
+focus -force .ok

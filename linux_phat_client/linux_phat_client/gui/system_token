@@ -1,0 +1,80 @@
+wm geometry . +300+250
+wm title  .  "System Registration"
+        
+proc sys_token { } {
+	destroy .msg .ok
+	wm geometry . +300+250
+	wm title  .  "System Registration"
+
+	label .user -text "Enter the token"
+	entry .usertext   -width 32  -relief sunken -textvariable  token
+	pack .user .usertext  -padx 2m  -pady 1m
+
+	focus -force .usertext
+
+
+	button .ok -text "Ok"  -width 5
+	pack .ok -side left -padx 20m  -pady 2m
+	button .cancel  -text "Cancel" -command exit -width 5
+	pack .cancel -side right -padx 20m  -pady 2m
+
+	bind .ok <Button-1> { check  $token  }
+	bind .ok <Return> { check  $token  }
+#	focus -force .ok
+
+	bind .cancel <Button-1> { out  }
+	bind .cancel <Return> { out }
+
+}
+
+
+proc check  { token } {
+        set n1 [string length $token ]
+        if { $token == "" } {
+                destroy .user .usertext .ok .cancel
+                wm geometry . +300+250
+                message .msg -width 380 -text "Error: token field is blank" -justify left
+                pack .msg -pady 5
+                button .ok  -text "Ok" -command sys_token 
+                focus -force .ok
+                pack .ok -padx 2m -pady 2m
+        } elseif { $n1 > 32 } {
+                destroy .user .usertext .passwd .passwdtext .ok .cancel
+                wm geometry . +300+250
+                message .msg -width 380 -text "Error:  token can't be more than 32 characters" -justify left
+                pack .msg -pady 5
+                button .ok  -text "Ok" -command sys_token
+                focus -force .ok
+                pack .ok -padx 2m -pady 2m
+
+        } else {
+		destroy .
+                load /opt/sslvpn-plus/naclient/libsvpcli.so svpcli
+                set val [system_token $token]
+	}
+}
+
+
+proc out { } {
+        exit
+}
+
+label .user -text "Please enter the registration code to register your system"
+entry .usertext   -width 32  -relief sunken -textvariable  token
+pack .user .usertext  -padx 2m  -pady 1m
+
+focus -force .usertext
+
+
+button .ok -text "Ok"  -width 5
+pack .ok -side left -padx 20m  -pady 2m
+button .cancel  -text "Cancel" -command exit -width 5
+pack .cancel -side right -padx 20m  -pady 2m
+
+bind .ok <Button-1> { check  $token  }
+bind .ok <Return> { check  $token  }
+#focus -force .ok
+
+bind .cancel <Button-1> { out  }
+bind .cancel <Return> { out }
+

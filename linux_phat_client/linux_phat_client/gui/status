@@ -1,0 +1,116 @@
+wm geometry . +370+250 
+wm title  .  "SSL VPN-Plus Client - Statistics"
+#puts $argv
+set gw_name [ lindex $argv  0 ]
+set username [ lindex $argv  1 ]
+set gw_ip [ lindex $argv  2 ]
+set gw_port [ lindex $argv  3 ]
+set bytes_sent [ lindex $argv  4 ]
+set bytes_recv [ lindex $argv  5 ]
+set version [ lindex $argv  6 ]
+set vpn_ip [ lindex $argv  7 ]
+set tunnel_mode [ lindex $argv  8 ]
+set proxy_enable [ lindex $argv  9 ]
+set proxy_server [ lindex $argv  10 ]
+set proxy_port [ lindex $argv  11 ]
+frame .a 
+frame .b 
+frame .c 
+pack .a .c .b -side top -pady 2
+
+frame .a.left
+frame .a.right 
+pack .a.left .a.right -side left
+
+label .a.left.remote_net      -text "Connected to Remote Network" 
+label .a.left.version         -text "Version" 
+label .a.left.user            -text "Connected as"  
+label .a.left.gw_ip           -text "Gateway Name"
+label .a.left.gw_port         -text "Gateway port"    
+label .a.left.bytes_sent      -text "Bytes Sent"   
+label .a.left.bytes_recv      -text "Bytes Received"   
+label .a.left.adapter         -text "Private Network IP Address"   
+label .a.left.tunnel_mode     -text "Tunnel Mode"   
+label .a.left.proxy_server    -text "Proxy Server"   
+label .a.left.proxy_port      -text "Proxy Port"   
+if { $vpn_ip == "" } {
+	if { $username == "NA" } {
+		pack .a.left.remote_net  .a.left.version .a.left.gw_ip .a.left.gw_port .a.left.bytes_sent .a.left.bytes_recv 	-side top -in .a.left -anchor w -pady 1
+	} else  {
+	pack .a.left.remote_net .a.left.version .a.left.user .a.left.gw_ip .a.left.gw_port .a.left.bytes_sent .a.left.bytes_recv 	 -side top -in .a.left -anchor w -pady 1
+	}
+} else {
+	if { $username == "NA" } {
+		pack .a.left.remote_net  .a.left.version .a.left.gw_ip .a.left.gw_port .a.left.bytes_sent .a.left.bytes_recv .a.left.adapter .a.left.tunnel_mode -side top -in .a.left -anchor w -pady 1
+} else {
+	pack .a.left.remote_net .a.left.version .a.left.user .a.left.gw_ip .a.left.gw_port .a.left.bytes_sent .a.left.bytes_recv .a.left.adapter .a.left.tunnel_mode -side top -in .a.left -anchor w -pady 1
+}
+}
+
+#pack .a.left.remote_net .a.left.user .a.left.gw_ip .a.left.gw_port .a.left.bytes_sent .a.left.bytes_recv -side top -in .a.left -anchor w -pady 1
+
+label .a.right.remote_net -text "$gw_name"
+label .a.right.user -text "$username"
+label .a.right.gw_ip -text "$gw_ip"
+label .a.right.gw_port -text "$gw_port"
+label .a.right.bytes_sent -text "$bytes_sent"
+label .a.right.bytes_recv -text "$bytes_recv"
+label .a.right.adapter -text "$vpn_ip"
+label .a.right.tunnel_mode -text "$tunnel_mode"
+label .a.right.version -text "$version"
+label .a.right.proxy_server    -text "$proxy_server"   
+label .a.right.proxy_port      -text "$proxy_port"   
+
+if { $vpn_ip == "" } {
+	if { $username == "NA" } {
+		pack .a.right.remote_net  .a.right.version .a.right.gw_ip .a.right.gw_port .a.right.bytes_sent .a.right.bytes_recv -side top -in .a.right  -anchor e -pady 1
+	} else  {
+	pack .a.right.remote_net .a.right.version  .a.right.user .a.right.gw_ip .a.right.gw_port .a.right.bytes_sent .a.right.bytes_recv -side top -in .a.right  -anchor e -pady 1
+	}
+	
+} else {
+	if { $username == "NA" } {
+		pack .a.right.remote_net  .a.right.version .a.right.gw_ip .a.right.gw_port .a.right.bytes_sent .a.right.bytes_recv .a.right.adapter .a.right.tunnel_mode -side top -in .a.right  -anchor e -pady 1
+} else {
+	pack .a.right.remote_net .a.right.version .a.right.user .a.right.gw_ip .a.right.gw_port .a.right.bytes_sent .a.right.bytes_recv .a.right.adapter .a.right.tunnel_mode -side top -in .a.right  -anchor e -pady 1
+}
+}
+if { $proxy_enable == 1 } {
+    pack .a.left.proxy_server -side top -in .a.left -anchor w -pady 3
+    pack .a.right.proxy_server -side top -in .a.right -anchor e -pady 1
+    pack .a.left.proxy_port -side top -in .a.left -anchor w -pady 1
+    pack .a.right.proxy_port -side top -in .a.right -anchor e -pady 1
+}
+if { $vpn_ip == "" } {
+	message .c.msg -justify left -width 300 -text "Note : Traffic to/from gateway will not work because Private Network IP is not assigned"
+	pack .c.msg  -side left -anchor e
+}
+
+#pack .a.right.remote_net .a.right.user .a.right.gw_ip .a.right.gw_port .a.right.bytes_sent .a.right.bytes_recv -side top -in .a.right  -anchor e -pady 1
+
+label .b.blank1 
+label .b.blank2 
+button .b.setting -text "Advance Setting" -command setting
+button .b.logout -text "Logout" -command "logout" -width 9
+button .b.cancel -text "Cancel"  -command exit    -width 9
+#pack .b.blank1 .b.setting .b.logout  .b.cancel .b.blank2 -side left -padx 7
+pack .b.logout .b.cancel -side left -padx 25 -pady 2
+
+proc logout { } {
+		destroy .
+		#exec sh user.sh logout
+		load /opt/sslvpn-plus/naclient/libsvpcli.so svpcli 
+		set retval [logout]
+		#exec wish /opt/sslvpn-plus/naclient/gui/mesg return value is $retval
+		if { $retval == 1 } {
+                	exec wish /opt/sslvpn-plus/naclient/gui/mesg Successfully logged out from SSL VPN-Plus gateway
+                } else {
+                #exec wish mesg Failed to SSL VPN-Plus gateway, Error code: $retval
+                	error_message $retval 1
+                }
+		exit
+}
+proc setting { } {
+		exec /opt/sslvpn-plus/naclient/user -gui -setting
+		exit
+}

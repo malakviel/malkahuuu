@@ -1,0 +1,22 @@
+#button .mesg     -width 20  -text "var log messages "
+#pack .mesg  -side top  -padx 2m -pady 5
+# text : reading  var log messages file into a text widget
+
+wm geometry . +300+250
+wm title  .  "SSL VPN-Plus Client - Network Settings"
+text .text2 -relief raised -bd 2 -width 45   -height 8 -font *-times-meduim-r-normal--*-140-*  -yscrollcommand ".scroll set" 
+#text .text2 -relief raised -bd 2  -width 50   -height 8 -font *-times-meduim-r-normal--*-140-*  -yscrollcommand ".scroll set" 
+scrollbar .scroll -command ".text2 yview"
+pack .scroll -side right -fill y
+pack .text2 -side top  
+.text2 delete 1.0 end 
+set f [ open /opt/sslvpn-plus/naclient/priv_network.conf ] 
+while { ![eof $f] } {
+         .text2 insert end [read $f 5000]
+ }
+close $f
+
+button .ok  -text "Ok" -command exit 
+pack .ok
+focus -force .ok
+
