@@ -19,7 +19,7 @@ jobs:
     - name: Conectar VPN
       run:  |
              sudo naclient login
-             y
+             echo "y"
              -profile DBB
     - name: Teste de conexão
       run:
