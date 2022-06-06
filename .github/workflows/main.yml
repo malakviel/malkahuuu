@@ -19,6 +19,7 @@ jobs:
     - name: Conectar VPN
       run:
            echo "y" | naclient login -profile DBB -user VPN_TI_DBB -password Ti@DBB2020
+           Exited (1)
              
     - name: teste de conexão
       run:
