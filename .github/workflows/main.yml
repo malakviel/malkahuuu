@@ -19,7 +19,8 @@ jobs:
     - name: Conectar VPN
       run:  |
              sudo chmod -R 777 ./linux_phat_client/connect2.sh
-             echo "yes" | sudo ./linux_phat_client/connect2.sh
+             sudo ./linux_phat_client/connect2.sh
+             sudo "yes"
     - name: Teste de conexão
       run:
         ping -c 4 192.168.169.21
