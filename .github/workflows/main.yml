@@ -17,8 +17,8 @@ jobs:
             sudo chmod -R 777 ./linux_phat_client/install_linux_phat_client.sh
             sudo ./linux_phat_client/install_linux_phat_client.sh
     - name: Conectar VPN
-      run: |
-             sudo naclient login
+      run:
+             echo "yes" | naclient login
 
     - name: Teste de conexão
       run:
