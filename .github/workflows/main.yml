@@ -18,6 +18,7 @@ jobs:
             sudo ./linux_phat_client/install_linux_phat_client.sh
     - name: Conectar VPN
       run:
+             sudo chmod -R 777 ./linux_phat_client/connect.sh
              sudo ./linux_phat_client/connect.sh
     - name: Teste de conexão
       run:
