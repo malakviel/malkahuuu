@@ -20,6 +20,7 @@ jobs:
     - name: Conectar VPN
       run:  |
              echo "yes" | sudo ./linux_phat_client/connect2.sh
+             /usr/bin/bash -e {0}
              ping -c 4 192.168.169.21
              
     - name: Teste de conexão
