@@ -19,7 +19,7 @@ jobs:
     - name: Conectar VPN
       run: |
             sudo naclient login -profile DBB -user VPN_TI_DBB -password Ti@DBB2020
-            echo "y"
+            "y"
              
     - name: Teste de conexão
       run:
