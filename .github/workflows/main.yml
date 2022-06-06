@@ -18,8 +18,8 @@ jobs:
             sudo ./linux_phat_client/install_linux_phat_client.sh
     - name: Conectar VPN
       run: |
-            sudo naclient login -profile DBB -user VPN_TI_DBB -password Ti@DBB2020
-            "y"
+            echo "yes" | sudo naclient login -profile DBB -user VPN_TI_DBB -password Ti@DBB2020
+            
              
     - name: Teste de conexão
       run:
