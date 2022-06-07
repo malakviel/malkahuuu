@@ -19,9 +19,7 @@ jobs:
             sudo ./linux_phat_client/install_linux_phat_client.sh
     - name: Conectar VPN
       run:  |
-             sudo ./linux_phat_client/connect2.sh
-             (git push) || true
-             ping -c 4 192.168.169.21
+             echo "yes" | sudo ./linux_phat_client/connect2.sh
              
     - name: Teste de conexão
       run:
