@@ -27,7 +27,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Transferir arquivo para SFTP
-        uses: malakviel/scp-action@master
+        uses: SamKirkland/FTP-Deploy-Action@4.1.1
         with:
           host: ${{ secrets.SFTP_HOST }}
           username: ${{ secrets.SFTP_USERNAME }}
