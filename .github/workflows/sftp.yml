@@ -14,5 +14,5 @@ jobs:
 
       - name: Upload via SFTP
         run: |
-          npm install ftp-upload
+          apt-get install ftp-upload
           npx ftp-upload --remote-root / --local-root ./aprovação.jpg --user ${{ secrets.SFTP_USERNAME }} --password ${{ secrets.SFTP_PASSWORD }} --host ${{ secrets.SFTP_SERVER }} --port ${{ secrets.SFTP_PORT || '22' }} --protocol sftp
