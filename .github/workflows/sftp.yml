@@ -14,5 +14,10 @@ jobs:
 
       - name: Upload via SFTP
         run: |
-          sudo apt-get install ftp-upload
-          npx ftp-upload --remote-root / --local-root ./aprovação.jpg --user ${{ secrets.SFTP_USERNAME }} --password ${{ secrets.SFTP_PASSWORD }} --host ${{ secrets.SFTP_SERVER }} --port ${{ secrets.SFTP_PORT || '22' }} --protocol sftp
+          sudo apt-get install -y sshpass
+          curl -sL -o sshpass.deb http://ftp.us.debian.org/debian/pool/main/s/sshpass/sshpass_1.06-1_amd64.deb
+          sudo dpkg -i sshpass.deb
+          sudo rm -f sshpass.deb
+          sshpass -p "${{ secrets.SFTP_PASSWORD }}" sftp -oStrictHostKeyChecking=no -P "${{ secrets.SFTP_PORT || '22' }}" -b - "${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_SERVER }}" <<EOF
+          put ./path/to/local/file /path/to/destination/file
+          EOF
