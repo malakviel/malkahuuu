@@ -22,4 +22,4 @@ jobs:
       run: |
         echo "${SSH_PRIVATE_KEY}" > /tmp/private_key
         chmod 600 /tmp/private_key
-        lftp -c "set sftp:auto-confirm yes; set sftp:connect-program 'ssh -i /tmp/private_key'; open sftp://${SFTP_USERNAME}:${SFTP_PASSWORD}@${SFTP_HOSTNAME}:${SFTP_PORT}; mirror -R ./aprovação.jpg /"
+        lftp -c "set sftp:auto-confirm yes; set sftp:connect-program 'ssh -i /tmp/private_key'; open sftp://${SFTP_USERNAME}:${SFTP_PASSWORD}@${SFTP_HOSTNAME}:${SFTP_PORT}; mirror -R ./aprovação.jpg /teste5"
