@@ -12,12 +12,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Add SSH key
+      - name: Setup SSH Keys and known_hosts
+        env:
+             SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          sudo mkdir -p ~/.ssh
-          sudo echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          sudo chmod 600 ~/.ssh/id_rsa
-          sudo ssh-keyscan -t rsa "${{ secrets.SFTP_SERVER }}" > ~/.ssh/known_hosts
+             ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+             ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
 
       - name: Upload via SFTP
         run: |
