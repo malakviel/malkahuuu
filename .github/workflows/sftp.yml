@@ -16,7 +16,7 @@ jobs:
       env:
         SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
         SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
-        SFTP_HOSTNAME: ${{ secrets.SFTP_HOSTNAME }}
+        SFTP_HOSTNAME: ${{ secrets.SFTP_SERVER }}
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       run: |
         echo "${SSH_PRIVATE_KEY}" > /tmp/private_key
