@@ -34,5 +34,5 @@ jobs:
       run: |
         echo "${SSH_PRIVATE_KEY}" > /tmp/private_key
         chmod 600 /tmp/private_key
-        ssh -i /tmp/private_key sftp.vizcaya@${SFTP_HOSTNAME} "C:\Windows\System32\inetsrv\appcmd.exe stop site 'vizorder-desenvolvimento.vizcaya.com.br'"
+        ssh -i /tmp/private_key sftp.vizcaya@${SFTP_HOSTNAME}:${SFTP_PORT} "C:\Windows\System32\inetsrv\appcmd.exe stop site 'vizorder-desenvolvimento.vizcaya.com.br'"
         
