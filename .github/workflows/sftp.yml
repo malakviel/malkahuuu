@@ -24,15 +24,26 @@ jobs:
         chmod 600 /tmp/private_key
         lftp -c "set sftp:auto-confirm yes; set sftp:connect-program 'ssh -i /tmp/private_key'; open sftp://${SFTP_USERNAME}:${SFTP_PASSWORD}@${SFTP_HOSTNAME}:${SFTP_PORT}; put aprovação.jpg -o /aprovação.jpg"
 
-    - name: Parar serviço
+    - name: Parar site no IIS
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        script: |
+          $passphrase = $env:KEY_PASSPHRASE
+          $keyfile = New-Object IO.FileInfo($env:KEY)
+          $key = [SSH.NET.PrivateKeyFile]::Parse($keyfile, $passphrase)
+          $credentials = New-Object SSH.NET.PasswordConnectionInfo($env:USERNAME, $key)
+          $ssh = New-Object SSH.NET.SshClient($env:HOST, $env:PORT, $env:USERNAME, $credentials)
+          $ssh.Connect()
+          Invoke-Expression "iisreset /stop"
+          Invoke-Expression "Stop-WebSite -Name 'vizorder-desenvolvimento.vizcaya.com.br'"
+          $ssh.Disconnect()
       env:
-        SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
-        SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
-        SFTP_HOSTNAME: ${{ secrets.SFTP_SERVER }}
-        SFTP_PORT: 5052
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      run: |
-        echo "${SSH_PRIVATE_KEY}" > /tmp/private_key
-        chmod 600 /tmp/private_key
-        ssh -i /tmp/private_key sftp.vizcaya@${SFTP_HOSTNAME}:${SFTP_PORT} "C:\Windows\System32\inetsrv\appcmd.exe stop site 'vizorder-desenvolvimento.vizcaya.com.br'"
+        HOST: ${{ secrets.SFTP_SERVER }}
+        USERNAME: ${{ secrets.SFTP_USERNAME }}
+        KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        KEY_PASSPHRASE: ${{ secrets.SFTP_PASSWORD }}
+        PORT: 5052
         
