@@ -14,7 +14,7 @@ jobs:
     - name: Configure SSH key
       uses: webfactory/ssh-agent@v0.4.2
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     - name: Connect to server and stop IIS site
       run: |
         ssh sftp.vizcaya@179.131.11.201:5051 'powershell Stop-WebAppPool -Name "vizorder.vizcaya.com.br"; Stop-Website -Name "vizorder.vizcaya.com.br"'
