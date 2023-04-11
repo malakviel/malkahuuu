@@ -45,5 +45,5 @@ jobs:
         USERNAME: ${{ secrets.SFTP_USERNAME }}
         KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         KEY_PASSPHRASE: ${{ secrets.SFTP_PASSWORD }}
-        PORT: 5052
+        PORT: 5051
         
