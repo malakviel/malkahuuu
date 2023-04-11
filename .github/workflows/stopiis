@@ -1,0 +1,20 @@
+name: Stop IIS Site
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  stop-iis-site:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install OpenSSH client
+      run: sudo apt-get install openssh-client -y
+    - name: Configure SSH key
+      uses: webfactory/ssh-agent@v0.4.2
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Connect to server and stop IIS site
+      run: |
+        ssh sftp.vizcaya@179.131.11.201:5051 'powershell Stop-WebAppPool -Name "vizorder.vizcaya.com.br"; Stop-Website -Name "vizorder.vizcaya.com.br"'
