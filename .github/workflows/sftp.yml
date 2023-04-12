@@ -24,26 +24,14 @@ jobs:
         chmod 600 /tmp/private_key
         lftp -c "set sftp:auto-confirm yes; set sftp:connect-program 'ssh -i /tmp/private_key'; open sftp://${SFTP_USERNAME}:${SFTP_PASSWORD}@${SFTP_HOSTNAME}:${SFTP_PORT}; put aprovação.jpg -o /aprovação.jpg"
 
-    - name: Parar site no IIS
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        script: |
-          $passphrase = $env:KEY_PASSPHRASE
-          $keyfile = New-Object IO.FileInfo($env:KEY)
-          $key = [SSH.NET.PrivateKeyFile]::Parse($keyfile, $passphrase)
-          $credentials = New-Object SSH.NET.PasswordConnectionInfo($env:USERNAME, $key)
-          $ssh = New-Object SSH.NET.SshClient($env:HOST, $env:PORT, $env:USERNAME, $credentials)
-          $ssh.Connect()
-          Invoke-Expression "iisreset /stop"
-          Invoke-Expression "Stop-WebSite -Name 'vizorder-desenvolvimento.vizcaya.com.br'"
-          $ssh.Disconnect()
-      env:
-        HOST: ${{ secrets.SFTP_SERVER }}
-        USERNAME: ${{ secrets.SFTP_USERNAME }}
-        KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        KEY_PASSPHRASE: ${{ secrets.SFTP_PASSWORD }}
-        PORT: 5051
-        
+
+        - name: Conectar ao servidor remoto via SSH
+        uses: appleboy/ssh-action@master
+        with:
+           host: ${{ secrets.SFTP_SERVER }}
+           username: marcelo.vasconcelos@vizcaya.com.br
+           password: M09o092021*os
+           port: 5051
+           key: ${{ secrets.SSH_PRIVATE_KEY2 }}
+           script: |
+            iisreset /start "vizorder-desenvolvimento.vizcaya.com.br"
