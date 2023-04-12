@@ -18,4 +18,4 @@ jobs:
            port: 5051
            key: ${{ secrets.SSH_PRIVATE_KEY2 }}
            script: |
-            iisreset /stop "vizorder-desenvolvimento.vizcaya.com.br"
+            iisreset /start "vizorder-desenvolvimento.vizcaya.com.br"
