@@ -12,7 +12,7 @@ jobs:
       - name: Conectar ao servidor remoto via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SFTP_SERVER }}
+          host: ${{ secrets.SFTP_SERVER }}:5051
           username: ${{ secrets.SFTP_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY2 }}
           script: |
