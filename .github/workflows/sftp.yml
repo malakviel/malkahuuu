@@ -25,9 +25,9 @@ jobs:
         lftp -c "set sftp:auto-confirm yes; set sftp:connect-program 'ssh -i /tmp/private_key'; open sftp://${SFTP_USERNAME}:${SFTP_PASSWORD}@${SFTP_HOSTNAME}:${SFTP_PORT}; put aprovação.jpg -o /aprovação.jpg"
 
 
-        - name: Conectar ao servidor remoto via SSH
-        uses: appleboy/ssh-action@master
-        with:
+    - name: Conectar ao servidor remoto via SSH
+      uses: appleboy/ssh-action@master
+      with:
            host: ${{ secrets.SFTP_SERVER }}
            username: marcelo.vasconcelos@vizcaya.com.br
            password: M09o092021*os
