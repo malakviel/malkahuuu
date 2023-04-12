@@ -17,5 +17,5 @@ jobs:
           password: M09o092021*os
           key: ${{ secrets.SSH_PRIVATE_KEY2 }}
           port: 5051
-          script: |
-            mkdir teste2
+          run: |
+            '%SYSTEMROOT%\System32\inetsrv\appcmd stop apppool /apppool.name:"vizorder-desenvolvimento.vizcaya.com.br"'
