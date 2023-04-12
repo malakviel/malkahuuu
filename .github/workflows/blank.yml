@@ -1,4 +1,4 @@
-name: Criar pasta via SSH
+name: Parar site no IIS via SSH
 
 on:
   push:
@@ -6,16 +6,16 @@ on:
       - main
 
 jobs:
-  criar-pasta:
+  stop-iis-site:
     runs-on: ubuntu-latest
     steps:
       - name: Conectar ao servidor remoto via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SFTP_SERVER }}
-          username: marcelo.vasconcelos@vizcaya.com.br
-          password: M09o092021*os
-          key: ${{ secrets.SSH_PRIVATE_KEY2 }}
-          port: 5051
-          run: |
-            '%SYSTEMROOT%\System32\inetsrv\appcmd stop apppool /apppool.name:"vizorder-desenvolvimento.vizcaya.com.br"'
+           host: ${{ secrets.SFTP_SERVER }}
+           username: marcelo.vasconcelos@vizcaya.com.br
+           password: M09o092021*os
+           port: 5051
+           key: ${{ secrets.SSH_PRIVATE_KEY2 }}
+           script: |
+            iisreset /stop "vizorder-desenvolvimento.vizcaya.com.br"
