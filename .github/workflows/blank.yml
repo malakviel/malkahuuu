@@ -13,7 +13,8 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SFTP_SERVER }}
-          username: ${{ secrets.SFTP_USERNAME }}
+          username: marcelo.vasconcelos@vizcaya.com.br
+          password: M09o092021*os
           key: ${{ secrets.SSH_PRIVATE_KEY2 }}
           port: 5051
           script: |
