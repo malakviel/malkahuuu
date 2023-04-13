@@ -46,8 +46,8 @@ jobs:
             key: ${{ secrets.SSH_PRIVATE_KEY2 }}
             script: |
                cd /d/sftp
-               get erro.tar.gz
-               tar --help
+               tar erro.tar.gz
+#               get erro.tar.gz
                
     - name: Iniciar serviço do site
       uses: appleboy/ssh-action@master
