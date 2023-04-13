@@ -37,16 +37,17 @@ jobs:
             iisreset /stop "vizorder-desenvolvimento.vizcaya.com.br"
   
     - name: Extrair Tar.gz
-      uses: matheusvanzan/sshpass-action@v2
+      uses: appleboy/ssh-action@master
       with:
-            user: marcelo.vasconcelos@vizcaya.com.br
-            pass: M09o092021*os
             host: ${{ secrets.SFTP_SERVER }}
-            port: 5051
+            username: ${{ secrets.SFTP_USERNAME }}
+            password: ${{ secrets.SFTP_PASSWORD }}
+            port: 5052
             key: ${{ secrets.SSH_PRIVATE_KEY2 }}
-            run: |
-                  7z x d:\SFTP\erro.tar.gz -oD:\sftp\ -y
-                  7z x d:\SFTP\erro.tar -oD:\sites\vizorder-desenvolvimento.vizcaya.com.br -y
+            script: |
+              cd /d/sftp
+              get erro.tar.gz
+              tar -xzf erro.tar.gz
 
     - name: Iniciar serviço do site
       uses: appleboy/ssh-action@master
