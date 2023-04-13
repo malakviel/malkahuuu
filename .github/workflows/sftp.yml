@@ -42,7 +42,7 @@ jobs:
             user: ${{ secrets.SFTP_USERNAME }}
             pass: ${{ secrets.SFTP_PASSWORD }}
             host: ${{ secrets.SFTP_SERVER }}
-            port: 5051
+            port: 5052
             key: ${{ secrets.SSH_PRIVATE_KEY2 }}
             run: |
                   7z x d:\SFTP\erro.tar.gz -oD:\sftp\ -y
