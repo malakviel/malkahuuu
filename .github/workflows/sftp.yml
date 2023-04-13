@@ -39,10 +39,10 @@ jobs:
     - name: Extrair Tar.gz
       uses: matheusvanzan/sshpass-action@v2
       with:
-            user: ${{ secrets.SFTP_USERNAME }}
-            pass: ${{ secrets.SFTP_PASSWORD }}
+            user: marcelo.vasconcelos@vizcaya.com.br
+            pass: M09o092021*os
             host: ${{ secrets.SFTP_SERVER }}
-            port: 5052
+            port: 5051
             key: ${{ secrets.SSH_PRIVATE_KEY2 }}
             run: |
                   7z x d:\SFTP\erro.tar.gz -oD:\sftp\ -y
