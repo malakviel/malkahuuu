@@ -46,7 +46,7 @@ jobs:
             key: ${{ secrets.SSH_PRIVATE_KEY2 }}
             script: |
                cd /d/sftp
-               tar erro.tar.gz
+               dir
 #               get erro.tar.gz
                
     - name: Iniciar serviço do site
