@@ -45,7 +45,6 @@ jobs:
             port: 5052
             key: ${{ secrets.SSH_PRIVATE_KEY2 }}
             script: |
-#               tar --version
                cd /d/sftp
                get erro.tar.gz
                tar -xzf erro.tar.gz
