@@ -25,12 +25,23 @@ jobs:
         lftp -c "set sftp:auto-confirm yes; set sftp:connect-program 'ssh -i /tmp/private_key'; open sftp://${SFTP_USERNAME}:${SFTP_PASSWORD}@${SFTP_HOSTNAME}:${SFTP_PORT}; put aprovação.jpg -o /aprovação.jpg"
 
 
-    - name: Conectar ao servidor remoto via SSH
+    - name: Parar Serviço do Site
       uses: appleboy/ssh-action@master
       with:
            host: ${{ secrets.SFTP_SERVER }}
-           username: marcelo.vasconcelos@vizcaya.com.br
-           password: M09o092021*os
+           username: ${{ secrets.SFTP_USERNAME }}
+           password: ${{ secrets.SFTP_PASSWORD }}
+           port: 5051
+           key: ${{ secrets.SSH_PRIVATE_KEY2 }}
+           script: |
+            iisreset /stop "vizorder-desenvolvimento.vizcaya.com.br"
+    
+    - name: Iniciar serviço do site
+      uses: appleboy/ssh-action@master
+      with:
+           host: ${{ secrets.SFTP_SERVER }}
+           username: ${{ secrets.SFTP_USERNAME }}
+           password: ${{ secrets.SFTP_PASSWORD }}
            port: 5051
            key: ${{ secrets.SSH_PRIVATE_KEY2 }}
            script: |
