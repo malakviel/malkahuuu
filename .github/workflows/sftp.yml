@@ -47,7 +47,7 @@ jobs:
             script: |
                tar --version
                cd /d/sftp
-#              get erro.tar.gz
+               get erro.tar.gz
 #              tar -xzf erro.tar.gz
 
     - name: Iniciar serviço do site
