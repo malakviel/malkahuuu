@@ -45,8 +45,8 @@ jobs:
              port: 5051
              key: ${{ secrets.SSH_PRIVATE_KEY2 }}
              script: |
-              7z x erro.tar.gz -oD:\sftp\ -y
-              7z x erro.tar -oD:\sites\vizorder-desenvolvimento.vizcaya.com.br -y
+              cd /d/SFTP/
+              7z x erro.tar.gz -aoa
             
     - name: Iniciar serviço do site
       uses: appleboy/ssh-action@master
