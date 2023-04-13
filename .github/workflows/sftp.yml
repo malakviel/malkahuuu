@@ -45,8 +45,7 @@ jobs:
             port: 5052
             key: ${{ secrets.SSH_PRIVATE_KEY2 }}
             script: |
-               cd /d/sftp
-               dir
+               tar -xzf d:\sftp\erro.tar.gz
 #               get erro.tar.gz
                
     - name: Iniciar serviço do site
