@@ -22,7 +22,7 @@ jobs:
       run: |
         echo "${SSH_PRIVATE_KEY}" > /tmp/private_key
         chmod 600 /tmp/private_key
-        lftp -c "set sftp:auto-confirm yes; set sftp:connect-program 'ssh -i /tmp/private_key'; open sftp://${SFTP_USERNAME}:${SFTP_PASSWORD}@${SFTP_HOSTNAME}:${SFTP_PORT}; put erro.taz.gz -o /erro.taz.gz"
+        lftp -c "set sftp:auto-confirm yes; set sftp:connect-program 'ssh -i /tmp/private_key'; open sftp://${SFTP_USERNAME}:${SFTP_PASSWORD}@${SFTP_HOSTNAME}:${SFTP_PORT}; put erro.tar.gz -o /erro.tar.gz"
 
 
     - name: Parar Serviço do Site
