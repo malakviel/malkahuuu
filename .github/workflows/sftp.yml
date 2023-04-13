@@ -45,8 +45,7 @@ jobs:
              port: 5051
              key: ${{ secrets.SSH_PRIVATE_KEY2 }}
              script: |
-              cd /d/SFTP/
-              7z x erro.tar.gz -aoa
+              dir
             
     - name: Iniciar serviço do site
       uses: appleboy/ssh-action@master
