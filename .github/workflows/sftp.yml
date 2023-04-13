@@ -47,8 +47,8 @@ jobs:
             script: |
                cd /d/sftp
                get erro.tar.gz
-               tar erro.tar.gz
-
+               tar --help
+               
     - name: Iniciar serviço do site
       uses: appleboy/ssh-action@master
       with:
