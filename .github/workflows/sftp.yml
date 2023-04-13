@@ -46,7 +46,7 @@ jobs:
             key: ${{ secrets.SSH_PRIVATE_KEY2 }}
             script: |
                tar --version
-#              cd /d/sftp
+               cd /d/sftp
 #              get erro.tar.gz
 #              tar -xzf erro.tar.gz
 
