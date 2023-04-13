@@ -45,7 +45,6 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
             7z x d:\SFTP\erro.tar.gz -oD:\sftp\ -y
-
             7z x d:\SFTP\erro.tar -oD:\sites\vizorder-desenvolvimento.vizcaya.com.br -y
     
     - name: Iniciar serviço do site
