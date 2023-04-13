@@ -45,6 +45,7 @@ jobs:
              port: 5051
              key: ${{ secrets.SSH_PRIVATE_KEY2 }}
              script: |
+              d:
               dir
             
     - name: Iniciar serviço do site
