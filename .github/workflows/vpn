@@ -1,0 +1,26 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main # Substitua "main" pelo nome da sua branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Escolha o sistema operacional para a execução do Action
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2 # Faz o checkout do código na branch definida
+
+      - name: Install Firefox
+        run: sudo apt-get update && sudo apt-get install firefox -y # Instala o Firefox
+
+      - name: Copy file to root
+        run: cp linux_phat_client.tgz / # Copia o arquivo para a raiz do sistema
+
+      - name: Extract file
+        run: tar zxvf linux_phat_client.tgz # Extrai o arquivo
+
+      - name: Execute install script
+        run: ./install_linux_phat_client.sh # Executa o script de instalação
